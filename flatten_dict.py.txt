@@ -1,0 +1,55 @@
+import logging
+
+class NotADictionary(Exception):
+    pass
+
+def flatten(obj: dict) -> dict:
+    """
+    This function takes a dictionary with arbitrary levels of nested
+    lists and dictionaries and flattens it.
+    
+    Raises NotADictionary if the input is invalid.
+    """
+    # TODO: Fill this in!
+    
+    flattened_dict = {}
+
+    try:
+        if not isinstance(obj, dict):
+            raise NotADictionary
+    except NotADictionary:
+        logging.error ('Given input is not a dictionary object')
+        return {}
+    
+    try:
+        helper(obj, '', flattened_dict)
+        return flattened_dict
+    except Exception as e:
+        logging.error ('An error occured : {}'.format(str(e)))
+        return {}
+
+def helper(obj, k, d):
+    if obj and isinstance(obj, dict):
+        for key, value in obj.items():
+            helper(value, k + '.' + key if k else key, d) # no need to add '.' if we are at first level
+    elif obj and isinstance(obj, (list, tuple, set)):
+        for index, item in enumerate(obj):
+            helper(item, k + '.' + str(index) if k else str(index), d) # no need to add '.' if we are at first level
+    elif not obj:
+        d[k] = None # to handle case when a nested list/dict is empty
+    else:    
+        d[k] = obj
+
+if __name__ == '__main__':
+    
+    d =  {
+    "name": "Cap'n Chuck",
+    "aliases": ["Chuck Force 1", "Whistlepig"],
+    "physical": {
+        "height_in": 26,
+        "weight_lb": 18
+    },
+    "wood_chucked_lbs": 2281
+    }
+    
+    print (flatten(d))
