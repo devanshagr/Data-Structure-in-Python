@@ -4,6 +4,7 @@ from collections import defaultdict, deque
 from heapq import heapify, heappush, heappop, heapreplace, heappushpop
 
 #  from branch master
+# one more comment from master
 # from branch new-branch
 class Graph(object):
 
